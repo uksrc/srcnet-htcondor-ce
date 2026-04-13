@@ -1,0 +1,55 @@
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+.history/
+
+# Environment files
+.env
+.env.*
+
+# Docker
+docker-compose.override.yml
+docker-compose.*.yml
+docker-compose.*.yaml
+Dockerfile.*
+
+# Helm
+*.tgz
+charts/
+helm/charts/
+
+# General build artifacts
+dist/
+build/
+release/
+*.log
+
+# Secrets and temporary files
+*.key
+*.pem
+*.crt
+
+# Editor temporary files
+*~
+*.swp
+*.swo
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Kubernetes
+*.kubeconfig
+
+# Generated files
+*.lock
