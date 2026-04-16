@@ -1,16 +1,18 @@
-FROM rockylinux/rockylinux:9-ubi-init AS htcondorce
+FROM rockylinux/rockylinux:9-minimal AS builder
 
-# Enable HTCondor + HTCondor-CE repositories
-RUN dnf -y install https://htcss-downloads.chtc.wisc.edu/repo/25.0/htcondor-release-current.el9.noarch.rpm
+# Enable HTCondor + HTCondor-CE repositories & install HTCondor-CE
+RUN dnf -y install https://htcss-downloads.chtc.wisc.edu/repo/25.0/htcondor-release-current.el9.noarch.rpm ; \
+    dnf -y install htcondor-ce ; \
+    dnf clean all ; \
+    rm -rf /usr/share/doc/* /usr/share/man/* /var/cache/* /tmp/* || true
 
-# Install HTCondor-CE
-RUN dnf -y install htcondor-ce \
- && dnf clean all
+FROM rockylinux/rockylinux:9-minimal
 
-# Create directories needed for K8s volumes
-RUN mkdir -p /etc/condor/config.d \
-             /var/log/condor \
-             /var/lib/condor
+# Copy installed HTCondor-CE files from builder stage
+COPY --from=builder /usr /usr
+COPY --from=builder /etc/condor /etc/condor
+COPY --from=builder /var/lib/condor /var/lib/condor
+COPY --from=builder /lib64 /lib64
 
 # Expose CE ports
 EXPOSE 9619 9618
