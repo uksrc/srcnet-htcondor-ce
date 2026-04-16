@@ -10,16 +10,6 @@ RUN microdnf install -y dnf ; \
     microdnf clean all ; \
     rm -rf /usr/share/doc/* /usr/share/man/* /var/cache/* /tmp/* || true
 
-FROM rockylinux/rockylinux:9-minimal
-
-# Copy installed HTCondor-CE files from builder stage
-COPY --from=builder /usr /usr
-COPY --from=builder /etc/condor /etc/condor
-COPY --from=builder /etc/condor-ce /etc/condor-ce
-COPY --from=builder /etc/blahp/condor_local_submit_attributes.sh /etc/blahp/condor_local_submit_attributes.sh
-COPY --from=builder /var/lib/condor /var/lib/condor
-COPY --from=builder /lib64 /lib64
-
 # Expose CE ports
 EXPOSE 9619 9618
 
